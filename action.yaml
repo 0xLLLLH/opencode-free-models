@@ -1,0 +1,48 @@
+name: 'Dynamic Free Model Resolver'
+description: 'Dynamically resolves the latest non-deprecated free models for specified providers from models.dev'
+author: '0xLLLLH'
+
+# 1. Define input parameters (makes the Action more reusable and flexible)
+inputs:
+  providers:
+    description: 'Comma-separated list of allowed providers'
+    required: false
+    default: 'opencode,opencode-go'
+  fallback:
+    description: 'Fallback model ID when no free models are resolved'
+    required: false
+    default: 'openrouter/free'
+
+# 2. Define output parameters (for downstream steps to consume)
+outputs:
+  model_id:
+    description: 'The resolved final available model ID'
+    value: ${{ steps.filter-model.outputs.MODEL_ID }}
+
+runs:
+  using: 'composite' # Declares this as a composite reusable Action
+  steps:
+    - name: Fetch and Filter Free Model
+      id: filter-model
+      shell: bash # Each run in a composite Action must explicitly specify shell
+      run: |
+        # Convert comma-separated input string to JQ array for precise matching
+        RESOLVED_MODEL=$(curl -s --max-time 3 https://models.dev/api.json | jq -r --arg provs "${{ inputs.providers }}" '
+          ($provs | split(",")) as $allowed |
+          to_entries[] |
+          select(.key as $k | ($allowed | index($k)) != null) |
+          .key as $prov |
+          .value.models? | objects |
+          to_entries[] |
+          select((.key | test("-free|:free")) and .value.status != "deprecated") |
+          "\($prov)/\(.key)"
+        ' 2>/dev/null | head -n 1)
+
+        # Fallback logic
+        if [ -z "$RESOLVED_MODEL" ] || [ "$RESOLVED_MODEL" == "null" ]; then
+          echo "⚠️ No valid model matched, enabling parameterized fallback: ${{ inputs.fallback }}"
+          RESOLVED_MODEL="${{ inputs.fallback }}"
+        fi
+
+        echo "Successfully resolved model ID: $RESOLVED_MODEL"
+        echo "MODEL_ID=$RESOLVED_MODEL" >> $GITHUB_OUTPUT

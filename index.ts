@@ -68,6 +68,7 @@ export const OpenCodeFreeModelsPlugin: Plugin = async ({ project, client, $, dir
             }
 
             config.model = resoleAlias(config.model);
+            config.small_model = resoleAlias(config.small_model);
 
             if (config.agent) {
                 for (const [name, agentConfig] of Object.entries(config.agent)) {
