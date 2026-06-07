@@ -41,7 +41,7 @@ const fetchFreeModels = async (providers: string[]): Promise<string[]> => {
             return [];
         }
         return Object.values(data.models)
-            .filter(model => model.status !== "deprecated" && model.name.endsWith("free"))
+            .filter(model => model.status !== "deprecated" && model.id.endsWith("free"))
             .map(model => `${provider}/${model.id}`);
     });
     return filteredModels;
