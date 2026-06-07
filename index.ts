@@ -34,13 +34,23 @@ const fetchFreeModels = async (providers: string[]): Promise<string[]> => {
     const resp = await fetch(`https://models.dev/api.json`);
     const jsonConfig = await resp.json() as ModelsDevData ?? {};
 
-    return providers.flatMap(provider => jsonConfig[provider]?.models ? Object.values(jsonConfig[provider].models) : []).filter(model => model.id?.includes("-free") && model?.status !== "deprecated").map(model => model.id);
+    const pickedByProviders = Object.fromEntries(providers.map(provider => [provider, jsonConfig[provider]]));
+    const filteredModels = Object.entries(pickedByProviders).flatMap(([provider, data]) => {
+        if (!data) {
+            console.warn(`Provider "${provider}" not found in models.dev data.`);
+            return [];
+        }
+        return Object.values(data.models)
+            .filter(model => model.status !== "deprecated" && model.name.endsWith("free"))
+            .map(model => `${provider}/${model.id}`);
+    });
+    return filteredModels;
 }
 
 export const OpenCodeFreeModelsPlugin: Plugin = async ({ project, client, $, directory, worktree }, options?: PluginOptions) => {
     const {
         providers = ["opencode"],
-        alias = "free-models/random",
+        alias = "free-models",
         fallbackModel,
     } = (options || {}) as OpenCodeFreeModelsPluginOptions;
 
