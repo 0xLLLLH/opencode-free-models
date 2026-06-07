@@ -1,4 +1,4 @@
-name: 'Dynamic Free Model Resolver'
+name: 'Opencode Free Model Resolver'
 description: 'Dynamically resolves the latest non-deprecated free models for specified providers from models.dev'
 author: '0xLLLLH'
 
@@ -7,7 +7,7 @@ inputs:
   providers:
     description: 'Comma-separated list of allowed providers'
     required: false
-    default: 'opencode,opencode-go'
+    default: 'opencode'
   fallback:
     description: 'Fallback model ID when no free models are resolved'
     required: false
