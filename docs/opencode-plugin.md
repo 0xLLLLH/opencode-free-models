@@ -34,16 +34,13 @@ The OpenCode Free Models Plugin dynamically resolves the latest non-deprecated f
 
 ## Usage Examples
 
+Add the plugin to your OpenCode configuration
+
 ### Basic Configuration
 ```json
 {
   "plugin": [
-    [
-      "git@github.com:0xLLLLH/opencode-free-models.git",
-      {
-        "providers": ["opencode"]
-      }
-    ]
+      "git@github.com:0xLLLLH/opencode-free-models.git"
   ]
 }
 ```
@@ -55,8 +52,7 @@ The OpenCode Free Models Plugin dynamically resolves the latest non-deprecated f
     [
       "git@github.com:0xLLLLH/opencode-free-models.git",
       {
-        "alias": "my-free-models",
-        "providers": ["opencode"]
+        "alias": "my-free-models"
       }
     ]
   ]

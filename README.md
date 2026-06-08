@@ -12,12 +12,7 @@ A project that provides two ways to resolve free models for OpenCode:
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    [
-      "git@github.com:0xLLLLH/opencode-free-models.git",
-      {
-        "providers": ["opencode"]
-      }
-    ]
+      "git@github.com:0xLLLLH/opencode-free-models.git"
   ]
 }
 ```
@@ -25,9 +20,6 @@ A project that provides two ways to resolve free models for OpenCode:
 ### For GitHub Action
 ```yaml
 - uses: 0xLLLLH/opencode-free-models@main
-  with:
-    providers: "opencode"
-    fallback: "openrouter/free"
 ```
 
 ## Choose Your Method

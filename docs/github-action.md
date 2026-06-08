@@ -14,9 +14,6 @@ Add the action to your GitHub Actions workflow:
 - name: Resolve Free Model
   id: resolve-model
   uses: 0xLLLLH/opencode-free-models@main
-  with:
-    providers: "opencode"
-    fallback: "openrouter/free"
 ```
 
 ### Integration with Existing Workflows
@@ -56,26 +53,34 @@ name: Resolve Free Model
 on: [push]
 
 jobs:
-  resolve-model:
+  run-opencode-with-free-model:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
-      
+
       - name: Resolve Free Model
-        id: resolve-model
+        id: resolve-free-model
         uses: 0xLLLLH/opencode-free-models@main
         with:
           providers: "opencode"
-      
+
       - name: Use Resolved Model
-        run: echo "Resolved model: ${{ steps.resolve-model.outputs.model_id }}"
+        run: echo "Resolved model: ${{ steps.resolve-free-model.outputs.model_id }}"
+
+      - name: Run opencode
+        uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_API_KEY: ${{ secrets.OPENCODE_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: ${{ steps.resolve-free-model.outputs.model_id }}
 ```
 
 ### Multiple Providers
 ```yaml
 - name: Resolve Free Model
-  id: resolve-model
+  id: resolve-free-model
   uses: 0xLLLLH/opencode-free-models@main
   with:
     providers: "opencode,openrouter"
@@ -85,7 +90,7 @@ jobs:
 ### Custom Fallback
 ```yaml
 - name: Resolve Free Model
-  id: resolve-model
+  id: resolve-free-model
   uses: 0xLLLLH/opencode-free-models@main
   with:
     providers: "opencode"
