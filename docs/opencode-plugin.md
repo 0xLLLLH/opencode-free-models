@@ -35,29 +35,47 @@ The OpenCode Free Models Plugin dynamically resolves the latest non-deprecated f
 ## Usage Examples
 
 ### Basic Configuration
-```yaml
-plugins:
-  - name: "opencode-free-models"
-    options:
-      providers: ["opencode"]
+```json
+{
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "providers": ["opencode"]
+      }
+    ]
+  ]
+}
 ```
 
 ### Custom Alias
-```yaml
-plugins:
-  - name: "opencode-free-models"
-    options:
-      alias: "my-free-models"
-      providers: ["opencode"]
+```json
+{
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "alias": "my-free-models",
+        "providers": ["opencode"]
+      }
+    ]
+  ]
+}
 ```
 
 ### Multiple Providers
-```yaml
-plugins:
-  - name: "opencode-free-models"
-    options:
-      providers: ["opencode", "openrouter"]
-      fallbackModel: "openrouter/free"
+```json
+{
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "providers": ["opencode", "openrouter"],
+        "fallbackModel": "openrouter/free"
+      }
+    ]
+  ]
+}
 ```
 
 ## How It Works

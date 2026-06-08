@@ -8,11 +8,18 @@ A project that provides two ways to resolve free models for OpenCode:
 ## Quick Start
 
 ### For OpenCode Plugin
-```yaml
-plugins:
-  - name: "opencode-free-models"
-    options:
-      providers: ["opencode"]
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "providers": ["opencode"]
+      }
+    ]
+  ]
+}
 ```
 
 ### For GitHub Action
@@ -66,12 +73,19 @@ plugins:
 ## Usage Examples
 
 ### OpenCode Plugin Example
-```yaml
-plugins:
-  - name: "opencode-free-models"
-    options:
-      providers: ["opencode"]
-      alias: "free-models"
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "providers": ["opencode"],
+        "alias": "free-models"
+      }
+    ]
+  ]
+}
 ```
 
 ### GitHub Action Example
