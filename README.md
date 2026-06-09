@@ -54,10 +54,12 @@ A project that provides two ways to resolve free models for OpenCode:
 - `alias`: Custom alias for free models (default: "free-models")
 - `providers`: List of providers to check (default: ["opencode"])
 - `fallbackModel`: Fallback model when no free models available
+- `pick`: How to pick from free models — "first" (default) or "random"
 
 ### GitHub Action Inputs
 - `providers`: Comma-separated provider list (default: "opencode")
 - `fallback`: Fallback model ID (default: "openrouter/free")
+- `pick`: How to pick from free models — "first" (default) or "random"
 
 ### GitHub Action Outputs
 - `model_id`: Resolved model ID

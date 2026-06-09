@@ -12,6 +12,10 @@ inputs:
     description: 'Fallback model ID when no free models are resolved'
     required: false
     default: 'openrouter/free'
+  pick:
+    description: 'How to pick a model from the list ("first" or "random")'
+    required: false
+    default: 'first'
 
 # 2. Define output parameters (for downstream steps to consume)
 outputs:
@@ -36,7 +40,7 @@ runs:
           to_entries[] |
           select((.key | test("-free|:free")) and .value.status != "deprecated") |
           "\($prov)/\(.key)"
-        ' 2>/dev/null | head -n 1)
+        ' 2>/dev/null | { if [ "${{ inputs.pick }}" = "random" ]; then sort -R | head -n 1; else head -n 1; fi } )
 
         # Fallback logic
         if [ -z "$RESOLVED_MODEL" ] || [ "$RESOLVED_MODEL" == "null" ]; then

@@ -32,6 +32,11 @@ The OpenCode Free Models Plugin dynamically resolves the latest non-deprecated f
 - **Default:** `undefined`
 - **Description:** A fallback model to use when no free model is available. This should be a model that the user has access to, but is not necessarily free. The plugin will attempt to use free models first, and only fall back to this model if no free models are available.
 
+### `pick`
+- **Type:** `"first" | "random"`
+- **Default:** `"first"`
+- **Description:** How to pick a model from the free model list. `"first"` picks the first available, `"random"` picks a random one.
+
 ## Usage Examples
 
 Add the plugin to your OpenCode configuration
@@ -74,11 +79,25 @@ Add the plugin to your OpenCode configuration
 }
 ```
 
+### Random Selection
+```json
+{
+  "plugin": [
+    [
+      "git@github.com:0xLLLLH/opencode-free-models.git",
+      {
+        "pick": "random"
+      }
+    ]
+  ]
+}
+```
+
 ## How It Works
 
 1. **Model Fetching:** The plugin fetches available models from the models.dev API
 2. **Filtering:** It filters models to find free models from the specified providers
-3. **Resolution:** The first available free model is selected
+3. **Resolution:** A free model is selected (first or random, based on the `pick` option)
 4. **Fallback:** If no free models are found, the fallback model is used
 5. **Configuration Update:** The resolved model is applied to your OpenCode configuration
 

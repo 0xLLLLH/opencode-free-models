@@ -18,6 +18,11 @@ interface OpenCodeFreeModelsPluginOptions extends PluginOptions {
      * The plugin will attempt to use free models first, and only fall back to this model if no free models are available.
      */
     fallbackModel?: string;
+    /**
+     * How to pick a model from the free model list.
+     * @default "first"
+     */
+    pick?: "first" | "random";
 }
 
 interface ModelsDevData {
@@ -52,6 +57,7 @@ export const OpenCodeFreeModelsPlugin: Plugin = async ({ project, client, $, dir
         providers = ["opencode"],
         alias = "free-models",
         fallbackModel,
+        pick = "first",
     } = (options || {}) as OpenCodeFreeModelsPluginOptions;
 
     return {
@@ -61,7 +67,9 @@ export const OpenCodeFreeModelsPlugin: Plugin = async ({ project, client, $, dir
             try {
                 const freeModels = await fetchFreeModels(providers);
                 if (freeModels.length > 0) {
-                    resolvedModel = freeModels[0]!;
+                    resolvedModel = pick === "random"
+                        ? freeModels[Math.floor(Math.random() * freeModels.length)]!
+                        : freeModels[0]!;
                 }
             } catch (error) {
                 console.error("Failed to fetch free models, falling back to default model:", error);

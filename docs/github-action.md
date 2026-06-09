@@ -39,6 +39,12 @@ You can use the resolved model ID in subsequent steps:
 - **Default:** `"openrouter/free"`
 - **Example:** `"openrouter/free"`
 
+### `pick`
+- **Description:** How to pick a model from the list ("first" or "random")
+- **Required:** false
+- **Default:** `"first"`
+- **Example:** `"random"`
+
 ## Output Parameters
 
 ### `model_id`
@@ -97,11 +103,21 @@ jobs:
     fallback: "my-custom-model"
 ```
 
+### Random Selection
+```yaml
+- name: Resolve Free Model
+  id: resolve-free-model
+  uses: 0xLLLLH/opencode-free-models@main
+  with:
+    providers: "opencode"
+    pick: "random"
+```
+
 ## How It Works
 
 1. **API Fetching:** The action fetches model data from the models.dev API
 2. **Provider Filtering:** It filters models to find free models from the specified providers
-3. **Model Selection:** The first available free model is selected
+3. **Model Selection:** A free model is selected (first or random, based on the `pick` option)
 4. **Fallback Logic:** If no free models are found, the fallback model is used
 5. **Output:** The resolved model ID is set as an output for downstream steps
 
